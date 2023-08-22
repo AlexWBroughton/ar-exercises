@@ -41,4 +41,13 @@ ActiveRecord::Schema.define do
   end
 end
 
+class Store < ActiveRecord::Base
+  has_many :employees
+end
+
+# employee.rb
+class Employee < ActiveRecord::Base
+  belongs_to :store
+end
+
 puts 'Setup DONE'
