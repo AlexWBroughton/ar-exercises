@@ -43,11 +43,25 @@ end
 
 class Store < ActiveRecord::Base
   has_many :employees
+
+  validates :name, presence: true, length: { minimum: 3 }
+  validates :annual_revenue, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validate :must_have_apparel
+
+  private
+
+  def must_have_apparel
+    if !mens_apparel? && !womens_apparel?
+      errors.add(:base, "Store must carry at least one type of apparel")
+    end
+  end
 end
 
-# employee.rb
+
 class Employee < ActiveRecord::Base
   belongs_to :store
-end
 
-puts 'Setup DONE'
+  validates :first_name, :last_name, presence: true
+  validates :hourly_rate, numericality: { only_integer: true, greater_than_or_equal_to: 40, less_than_or_equal_to: 200 }
+end
